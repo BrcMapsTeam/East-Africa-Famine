@@ -2,7 +2,7 @@
 
 var config = {
     title:"Madagascar 3W 2017",
-    description: "<p>Click the graphs or map to interact.<br />Date: April 2017.<br />Contacts: <a href='https://twitter.com/Simon_B_Johnson' target='_blank'>Simon Johnson</a>, <a href='https://twitter.com/zibethin</p>' target='_blank'>Thuong Nguyen</a></p>",
+    description: "<p>Click the graphs or map to interact.<br />Date: April 2017.<br /><a href='#contacts'>Contacts</a></p>",
     data: "data/data2.json",
         //"https://proxy.hxlstandard.org/data.json?url=https%3A//docs.google.com/spreadsheets/d/1eJjAvrAMFLpO3TcXZYcXXc-_HVuHLL-iQUULV60lr1g/edit%23gid%3D0&strip-headers=on", //"data/data.json",
     whoFieldName:"#org",
@@ -11,7 +11,7 @@ var config = {
     statusFieldName:"#status",
     geo:"data/mdgAdm3.json",
     joinAttribute:"P_CODE",
-    colors:['#81d4fa','#4fc3f7','#29b6f6','#03a9f4','#039be5','#0288d1','#0277bd','#01579b']
+    colors:['#ef8f8f','#9a181a','#841517','#ef8f8f','#6e1113','#580e0f','#420a0b','#2c0708']
 };
 
 // hxlProxyToJSON: reading hxl tags and setting them as keys for each event
