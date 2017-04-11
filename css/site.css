@@ -72,7 +72,8 @@ h2 {
 
 .table_head {
     width:9.5%;
-    display:inline-block;
+    display:table-cell;
+    padding: 5px;
 }
 
 .dc-table-group{
@@ -86,10 +87,22 @@ tbody{
 
 .dc-table-row {
     width:100%;
+
 }
 
 .dc-table-column{
-    width:16%;
+    width:9.5%;
     padding:0px;
     margin:0px;
+}
+
+.header{
+    border-bottom:solid black 2px;
+    color: black;
+    font-weight: 600;
+    padding-top:2em;
+}
+
+.filter-count{
+    font-size:2em;
 }

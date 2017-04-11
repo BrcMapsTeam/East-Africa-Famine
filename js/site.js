@@ -2,15 +2,17 @@
 
 var config = {
     title:"Madagascar 3W 2017",
-    description: "<p>Click the graphs or map to interact.<br />Date: April 2017.<br /><a href='#contacts'>Contacts</a></p>",
-    data: "data/data2.json",
-        //"https://proxy.hxlstandard.org/data.json?url=https%3A//docs.google.com/spreadsheets/d/1eJjAvrAMFLpO3TcXZYcXXc-_HVuHLL-iQUULV60lr1g/edit%23gid%3D0&strip-headers=on", //"data/data.json",
+    description: "<p>Cliquez sur les graphes ou sur la carte pour filtrer.<br />Date: Avril 2017.<br /><a href='#contacts'>Contacts</a></p>",
+    data: //"data/data2.json",
+        "https://proxy.hxlstandard.org/data.json?url=https%3A//docs.google.com/spreadsheets/d/1eJjAvrAMFLpO3TcXZYcXXc-_HVuHLL-iQUULV60lr1g/edit%23gid%3D0&strip-headers=on&force=on", //"data/data.json",
     whoFieldName:"#org",
     whatFieldName:"#sector",
     whereFieldName:"#adm3+code",
     statusFieldName: "#status",
     interventionFieldName: "#sector+subsector",
     activiteFieldName: "#activity+type",
+    reached: "#reached",
+    targeted: "#targeted",
     geo:"data/mdgAdm3.json",
     joinAttribute:"P_CODE",
     colors:['#ef8f8f','#9a181a','#841517','#ef8f8f','#6e1113','#580e0f','#420a0b','#2c0708']
@@ -48,6 +50,7 @@ function hxlProxyToJSON(input) {
     return output;
 }
 
+
 //function to generate the 3W component
 //data is the whole 3W Excel data set
 //geom is geojson file
@@ -72,6 +75,7 @@ function generate3WComponent(config,data,geom){
     var statusDimension = cf.dimension(function (d) { return d[config.statusFieldName]; });
     var interventionDimension = cf.dimension(function (d) { return d[config.interventionFieldName]; });
     var activiteDimension = cf.dimension(function (d) { return d[config.activiteFieldName]; });
+    var reachedDimension = cf.dimension(function (d) { return d[config.reached]; });
 
     var whoGroup = whoDimension.group();
     var whatGroup = whatDimension.group();
@@ -79,7 +83,26 @@ function generate3WComponent(config,data,geom){
     var statusGroup = statusDimension.group();
     var interventionGroup = interventionDimension.group();
     var activiteGroup = activiteDimension.group();
+    var reachedGroup = reachedDimension.group();
+    var reached = cf.groupAll().reduceSum(function (d) {
+        if (isNaN(d[config.reached])) {
+            return 0;
+        } else {
+            console.log(d[config.reached]);
+            return d[config.reached];
+        }
+    });
+    var targeted = cf.groupAll().reduceSum(function (d) {
+        if (isNaN(d[config.targeted])) {
+            return 0;
+        } else {
+            console.log(d[config.targeted]);
+            return d[config.targeted];
+        }
+    });
+
     var all = cf.groupAll();
+
 
     whoChart.width($('#hdx-3W-who').width()).height(200)
             .dimension(whoDimension)
@@ -150,6 +173,15 @@ function generate3WComponent(config,data,geom){
             .dimension(cf)
             .group(all);
 
+    dc.dataCount('#reached-info')
+            .dimension(cf)
+            .group(reached);
+
+    dc.dataCount('#targeted-info')
+            .dimension(cf)
+            .group(targeted);
+
+
     whereChart.width($('#hxd-3W-where').width()).height(250)
             .dimension(whereDimension)
             .group(whereGroup)
@@ -168,14 +200,14 @@ function generate3WComponent(config,data,geom){
             .featureKeyAccessor(function (feature) {
                 return (feature.properties[(config.joinAttribute)]);
             });
-            
-        dc.dataTable("#data-table")
-                .dimension(whatDimension)                
-                .group(function (d) {
-                    return d[config.whatFieldName];
-                })
-                .size(650) //number of lines
-                .columns([ //#org, #adm1+name, #adm2+name #adm3+name #adm4+name, #status, #sector+subsector #activity+type #targeted #reached
+
+    try {
+    dc.dataTable("#data-table")
+            .dimension(whatDimension)
+            .showGroups(false)
+            .group(function (d) {return d[config.whatFieldName]; })
+            .size(200) //number of lines
+            .columns([//"#org", "adm1+name", "adm2+name", "adm3+name", "adm4+name", "status", "sector+subsector", "activity+type", "targeted", "reached"
                     function (d) {
                        return d['#org']; 
                     },
@@ -206,10 +238,11 @@ function generate3WComponent(config,data,geom){
                     function(d){
                         return d['#reached']; 
                     }
-                ])
-                .renderlet(function (table) {
-                    table.selectAll(".dc-table-group").classed("info", true);
-                });            
+            ])
+           //.renderlet(function (table) {
+           //         table.selectAll(".dc-table-group").classed("info", true);
+        //     });    
+    } catch (e) { console.log("Error creating the table: ", e.message) }
                                 
     dc.renderAll();
     
