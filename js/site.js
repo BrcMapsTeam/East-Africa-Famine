@@ -2,9 +2,9 @@
 
 var config = {
     title:"Madagascar 3W 2017",
-    description: "<p>Click the graphs or map to interact.<br />Date: April 2017.<br /><a href='#contacts'>Contacts</a></p>",
-    data: "data/data2.json",
-        //"https://proxy.hxlstandard.org/data.json?url=https%3A//docs.google.com/spreadsheets/d/1eJjAvrAMFLpO3TcXZYcXXc-_HVuHLL-iQUULV60lr1g/edit%23gid%3D0&strip-headers=on", //"data/data.json",
+    description: "<p>Cliquez sur les graphes ou sur la carte pour filtrer.<br />Date: Avril 2017.<br /><a href='#contacts'>Contacts</a></p>",
+    data: //"data/data2.json",
+        "https://proxy.hxlstandard.org/data.json?url=https%3A//docs.google.com/spreadsheets/d/1eJjAvrAMFLpO3TcXZYcXXc-_HVuHLL-iQUULV60lr1g/edit%23gid%3D0&strip-headers=on&force=on", //"data/data.json",
     whoFieldName:"#org",
     whatFieldName:"#sector",
     whereFieldName:"#adm3+code",
@@ -92,6 +92,14 @@ function generate3WComponent(config,data,geom){
             return d[config.reached];
         }
     });
+    var targeted = cf.groupAll().reduceSum(function (d) {
+        if (isNaN(d[config.targeted])) {
+            return 0;
+        } else {
+            console.log(d[config.targeted]);
+            return d[config.targeted];
+        }
+    });
 
     var all = cf.groupAll();
 
@@ -165,10 +173,13 @@ function generate3WComponent(config,data,geom){
             .dimension(cf)
             .group(all);
 
-    console.log(reached);
     dc.dataCount('#reached-info')
             .dimension(cf)
             .group(reached);
+
+    dc.dataCount('#targeted-info')
+            .dimension(cf)
+            .group(targeted);
 
 
     whereChart.width($('#hxd-3W-where').width()).height(250)
