@@ -169,13 +169,13 @@ function generate3WComponent(config,data,geom){
                 return (feature.properties[(config.joinAttribute)]);
             });
             
-        dc.dataTable("#data-table")
-                .dimension(whatDimension)                
-                .group(function (d) {
-                    return d[config.whatFieldName];
-                })
-                .size(650) //number of lines
-                .columns([ //#org, #adm1+name, #adm2+name #adm3+name #adm4+name, #status, #sector+subsector #activity+type #targeted #reached
+    dc.dataTable("#data-table")
+            .dimension(whatDimension)
+            .showGroups(false)
+            .group(function (d) {
+                    return d[config.whatFieldName];})
+            .size(650) //number of lines
+            .columns([ //#org, #adm1+name, #adm2+name #adm3+name #adm4+name, #status, #sector+subsector #activity+type #targeted #reached
                     function (d) {
                        return d['#org']; 
                     },
@@ -207,7 +207,7 @@ function generate3WComponent(config,data,geom){
                         return d['#reached']; 
                     }
                 ])
-                .renderlet(function (table) {
+           .renderlet(function (table) {
                     table.selectAll(".dc-table-group").classed("info", true);
                 });            
                                 
