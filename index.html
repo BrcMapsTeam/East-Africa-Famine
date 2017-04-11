@@ -1,4 +1,4 @@
-<html>
+﻿<html>
 <head>
     <title>3W Dashboard</title>
     <meta charset="UTF-8">
@@ -19,7 +19,7 @@
 </head>
 <body>
     <div class="container">
-        <div id="header" class="row" >
+        <div id="header" class="row">
             <div class="col-lg-6 col-md-6">
                 <div id="shelterclusterlogo" class="container">
                     <img src="img/sheltercluster.svg" class="img-responsive" alt="Shelter Cluster logo cannot be displayed">
@@ -41,44 +41,56 @@
                 <p id="description"></p>
             </div>
         </div>
+
+        <!--first row-->
         <div class="row">
             <div class="col-md-4 colheight">
                 <div class="hdx-3w-viz" id="hdx-3W-status">
-                    <h2>Statut</h2>
+                    <h2>Statut de l'activité</h2>
                 </div>
             </div>
             <div class="col-md-4 colheight">
                 <div class="hdx-3w-viz" id="hdx-3W-what">
-                    <h2>What</h2>
+                    <h2>Secteur</h2>
                 </div>
             </div>
             <div class="col-md-4 colheight"><div id="hdx-3W-who" class="hdx-3w-viz"><h2>Who (Top 20)</h2></div></div>
         </div>
+
+        <!--second row-->
         <div class="row">
-            <div class="col-md-12"><h2 id="wheretitle">Where</h2><div class="hdx-3w-viz" id="hdx-3W-where"></div></div>
-        </div>
-        <div class="row">
-            <div class="table table-hover" id="data-table">
-                <h2>Table de Données</h2>
-                <div class="header">
-                    <!--#org, #adm1+name, #adm2+name #adm3+name #adm4+name, #status, #sector+subsector #activity+type #targeted #reached-->
-                    <div class="table_head">Organisation Responsable</div>
-                    <div class="table_head">Admin1</div>
-                    <div class="table_head">Admin2</div>
-                    <div class="table_head">Admin3</div>
-                    <div class="table_head">Admin4</div>
-                    <div class="table_head">Statut</div>
-                    <div class="table_head">Détail de l'Intervention</div>
-                    <div class="table_head">Activité</div>
-                    <div class="table_head">Ménages Ciblés</div>
-                    <div class="table_head">Ménages Atteints</div>
+            <div class="col-md-6"><h2 id="wheretitle">Where</h2><div class="hdx-3w-viz" id="hdx-3W-where"></div></div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div id="intervention" class="hdx-3w-viz"><h2 id="">Détail de l'intervention</h2></div>
+                 </div>
+                 <div class="row">
+                     <div id="activite" class="hdx-3w-viz"><h2 id="">Activité</h2></div>
+                 </div>
+            </div>
+            <div class="row">
+                <div class="table table-hover" id="data-table">
+                    <h2>Table de Données</h2>
+                    <div class="header">
+                        <!--#org, #adm1+name, #adm2+name #adm3+name #adm4+name, #status, #sector+subsector #activity+type #targeted #reached-->
+                        <div class="table_head">Organisation Responsable</div>
+                        <div class="table_head">Admin1</div>
+                        <div class="table_head">Admin2</div>
+                        <div class="table_head">Admin3</div>
+                        <div class="table_head">Admin4</div>
+                        <div class="table_head">Statut</div>
+                        <div class="table_head">Détail de l'Intervention</div>
+                        <div class="table_head">Activité</div>
+                        <div class="table_head">Ménages Ciblés</div>
+                        <div class="table_head">Ménages Atteints</div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div id="contacts" class="row">
-            <p>Contacts:</p>
-            <p>Data: Guido</p>
-            <p>Code: <a href='https://twitter.com/Simon_B_Johnson' target='_blank'>Simon Johnson</a>, <a href='https://twitter.com/zibethin</p>' target='_blank'>Thuong Nguyen</a>, SonjaAM (shelter cluster branding)</p>
+            <div id="contacts" class="row">
+                <p>Contacts:</p>
+                <p>Data: Guido</p>
+                <p>Code: <a href='https://twitter.com/Simon_B_Johnson' target='_blank'>Simon Johnson</a>, <a href='https://twitter.com/zibethin</p>' target='_blank'>Thuong Nguyen</a>, SonjaAM (shelter cluster branding)</p>
+            </div>
         </div>
     </div>
     <script src="js/site.js"></script>

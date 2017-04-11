@@ -8,7 +8,9 @@ var config = {
     whoFieldName:"#org",
     whatFieldName:"#sector",
     whereFieldName:"#adm3+code",
-    statusFieldName:"#status",
+    statusFieldName: "#status",
+    interventionFieldName: "#sector+subsector",
+    activiteFieldName: "#activity+type",
     geo:"data/mdgAdm3.json",
     joinAttribute:"P_CODE",
     colors:['#ef8f8f','#9a181a','#841517','#ef8f8f','#6e1113','#580e0f','#420a0b','#2c0708']
@@ -59,17 +61,24 @@ function generate3WComponent(config,data,geom){
     var whatChart = dc.rowChart('#hdx-3W-what');
     var whereChart = dc.leafletChoroplethChart('#hdx-3W-where');
     var statusChart = dc.rowChart('#hdx-3W-status');
+    var interventionChart = dc.rowChart('#intervention');
+    var activiteChart = dc.rowChart('#activite');
 
     var cf = crossfilter(data);
 
     var whoDimension = cf.dimension(function(d){ return d[config.whoFieldName]; });
     var whatDimension = cf.dimension(function(d){ return d[config.whatFieldName]; });
     var whereDimension = cf.dimension(function(d){ return d[config.whereFieldName]; });
-    var statusDimension = cf.dimension(function(d){ return d[config.statusFieldName]; });
+    var statusDimension = cf.dimension(function (d) { return d[config.statusFieldName]; });
+    var interventionDimension = cf.dimension(function (d) { return d[config.interventionFieldName]; });
+    var activiteDimension = cf.dimension(function (d) { return d[config.activiteFieldName]; });
+
     var whoGroup = whoDimension.group();
     var whatGroup = whatDimension.group();
     var whereGroup = whereDimension.group();
     var statusGroup = statusDimension.group();
+    var interventionGroup = interventionDimension.group();
+    var activiteGroup = activiteDimension.group();
     var all = cf.groupAll();
 
     whoChart.width($('#hdx-3W-who').width()).height(200)
@@ -109,7 +118,33 @@ function generate3WComponent(config,data,geom){
             .colors(config.colors)
             .colorDomain([0,7])
             .colorAccessor(function(d, i){return 3;})
-            .xAxis().ticks(5); 
+            .xAxis().ticks(5);
+
+    interventionChart.width($('#intervention').width()).height(150)
+            .dimension(interventionDimension)
+            .group(interventionGroup)
+            .elasticX(true)
+            .data(function (group) {
+                return group.top(15);
+            })
+            .labelOffsetY(13)
+            .colors(config.colors)
+            .colorDomain([0, 7])
+            .colorAccessor(function (d, i) { return 3; })
+            .xAxis().ticks(5);
+
+    activiteChart.width($('#activite').width()).height(150)
+            .dimension(activiteDimension)
+            .group(activiteGroup)
+            .elasticX(true)
+            .data(function (group) {
+                return group.top(15);
+            })
+            .labelOffsetY(13)
+            .colors(config.colors)
+            .colorDomain([0, 7])
+            .colorAccessor(function (d, i) { return 3; })
+            .xAxis().ticks(5);
 
     dc.dataCount('#count-info')
             .dimension(cf)
