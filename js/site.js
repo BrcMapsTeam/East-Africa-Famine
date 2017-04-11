@@ -88,7 +88,6 @@ function generate3WComponent(config,data,geom){
         if (isNaN(d[config.reached])) {
             return 0;
         } else {
-            console.log(d[config.reached]);
             return d[config.reached];
         }
     });
@@ -96,7 +95,6 @@ function generate3WComponent(config,data,geom){
         if (isNaN(d[config.targeted])) {
             return 0;
         } else {
-            console.log(d[config.targeted]);
             return d[config.targeted];
         }
     });
@@ -181,69 +179,70 @@ function generate3WComponent(config,data,geom){
             .dimension(cf)
             .group(targeted);
 
-
-    whereChart.width($('#hxd-3W-where').width()).height(250)
-            .dimension(whereDimension)
-            .group(whereGroup)
-            .center([-15.623037, 48.702393])//[6.9167,150.1833])
-            .zoom(6)    
-            .geojson(geom)
-            .colors(['#CCCCCC', config.colors[3]])
-            .colorDomain([0, 1])
-            .colorAccessor(function (d) {
-                if(d>0){
-                    return 1;
-                } else {
-                    return 0;
-                }
-            })           
-            .featureKeyAccessor(function (feature) {
-                return (feature.properties[(config.joinAttribute)]);
-            });
+    try {
+        whereChart.width($('#hxd-3W-where').width()).height(250)
+                .dimension(whereDimension)
+                .group(whereGroup)
+                .center([-15.623037, 48.702393])//[6.9167,150.1833])
+                .zoom(6)
+                .geojson(geom)
+                .colors(['#CCCCCC', config.colors[3]])
+                .colorDomain([0, 1])
+                .colorAccessor(function (d) {
+                    if (d > 0) {
+                        return 1;
+                    } else {
+                        return 0;
+                    }
+                })
+                .featureKeyAccessor(function (feature) {
+                    return (feature.properties[(config.joinAttribute)]);
+                });
+    } catch (e) { console.log("Error creating the map: ", e.message) }
 
     try {
-    dc.dataTable("#data-table")
-            .dimension(whatDimension)
-            .showGroups(false)
-            .group(function (d) {return d[config.whatFieldName]; })
-            .size(200) //number of lines
-            .columns([//"#org", "adm1+name", "adm2+name", "adm3+name", "adm4+name", "status", "sector+subsector", "activity+type", "targeted", "reached"
-                    function (d) {
-                       return d['#org']; 
-                    },
-                    function(d){
-                       return d['#adm1+name']; 
-                    },
-                    function(d){
-                       return d['#adm2+name'];
-                    },
-                    function(d){
-                       return d['#adm3+name'];
-                    },
-                    function(d){
-                       return d['#adm4+name']; 
-                    },
-                    function(d){
-                       return d['#status']; 
-                    },
-                    function(d){
-                        return d['#sector+subsector']; 
-                    },
-                    function(d){
-                        return d['#activity+type']; 
-                    },
-                    function(d){
-                        return d['#targeted']; 
-                    },
-                    function(d){
-                        return d['#reached']; 
-                    }
-            ])
-           //.renderlet(function (table) {
-           //         table.selectAll(".dc-table-group").classed("info", true);
+        dc.dataTable("#data-table")
+                .dimension(whatDimension)
+                .showGroups(false)
+                .group(function (d) { return d[config.whatFieldName]; })
+                .size(200) //number of lines
+                .columns([//"#org", "adm1+name", "adm2+name", "adm3+name", "adm4+name", "status", "sector+subsector", "activity+type", "targeted", "reached"
+                        function (d) {
+                            return d['#org'];
+                        },
+                        function (d) {
+                            return d['#adm1+name'];
+                        },
+                        function (d) {
+                            return d['#adm2+name'];
+                        },
+                        function (d) {
+                            return d['#adm3+name'];
+                        },
+                        function (d) {
+                            return d['#adm4+name'];
+                        },
+                        function (d) {
+                            return d['#status'];
+                        },
+                        function (d) {
+                            return d['#sector+subsector'];
+                        },
+                        function (d) {
+                            return d['#activity+type'];
+                        },
+                        function (d) {
+                            return d['#targeted'];
+                        },
+                        function (d) {
+                            return d['#reached'];
+                        }
+                ])
+        //.renderlet(function (table) {
+        //         table.selectAll(".dc-table-group").classed("info", true);
         //     });    
     } catch (e) { console.log("Error creating the table: ", e.message) }
-                                
+
     dc.renderAll();
     
     var g = d3.selectAll('#hdx-3W-who').select('svg').append('g');
