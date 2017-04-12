@@ -105,3 +105,9 @@ tbody{
 .filter-count{
     font-size:2em;
 }
+
+#shelterClusterLogo{
+    height:50px;
+    width:300px;
+    padding-top: 10px;
+}
