@@ -154,7 +154,7 @@ function generate3WComponent(config,data,geom){
             .colorAccessor(function (d, i) { return 3; })
             .xAxis().ticks(5);
 
-    activiteChart.width($('#activite').width()).height(150)
+    activiteChart.width($('#activite').width())
             .dimension(activiteDimension)
             .group(activiteGroup)
             .elasticX(true)
@@ -207,7 +207,7 @@ function generate3WComponent(config,data,geom){
                 .showGroups(false)
                 .group(function (d) { return d[config.whatFieldName]; })
                 .size(200) //number of lines
-                .columns([//"#org", "adm1+name", "adm2+name", "adm3+name", "adm4+name", "status", "sector+subsector", "activity+type", "targeted", "reached"
+                .columns([
                         function (d) {
                             return d['#org'];
                         },
