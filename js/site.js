@@ -61,7 +61,7 @@ function generate3WComponent(config,data,geom){
     $('#description').html(config.description);
 
     var whoChart = dc.rowChart('#hdx-3W-who');
-    var whatChart = dc.rowChart('#hdx-3W-what');
+    //var whatChart = dc.rowChart('#hdx-3W-what');
     var whereChart = dc.leafletChoroplethChart('#hdx-3W-where');
     var statusChart = dc.rowChart('#hdx-3W-status');
     var interventionChart = dc.rowChart('#intervention');
@@ -115,18 +115,18 @@ function generate3WComponent(config,data,geom){
             .colorAccessor(function(d, i){return 3;})
             .xAxis().ticks(5);
 
-    whatChart.width($('#hdx-3W-what').width()).height(200)
-            .dimension(whatDimension)
-            .group(whatGroup)
-            .elasticX(true)
-            .data(function(group) {
-                return group.top(15);
-            })
-            .labelOffsetY(13)
-            .colors(config.colors)
-            .colorDomain([0,7])
-            .colorAccessor(function(d, i){return 3;})
-            .xAxis().ticks(5);
+    //whatChart.width($('#hdx-3W-what').width()).height(200)
+    //        .dimension(whatDimension)
+    //        .group(whatGroup)
+    //        .elasticX(true)
+    //        .data(function(group) {
+    //            return group.top(15);
+    //        })
+    //        .labelOffsetY(13)
+    //        .colors(config.colors)
+    //        .colorDomain([0,7])
+    //        .colorAccessor(function(d, i){return 3;})
+    //        .xAxis().ticks(5);
     
     statusChart.width($('#hdx-3W-status').width()).height(150)
             .dimension(statusDimension)
@@ -158,6 +158,7 @@ function generate3WComponent(config,data,geom){
             .dimension(activiteDimension)
             .group(activiteGroup)
             .elasticX(true)
+            .height(300)
             .data(function (group) {
                 return group.top(15);
             })
