@@ -11,7 +11,7 @@ var config = {
     statusFieldName: "#status",
     interventionFieldName: "#sector+subsector",
     activiteFieldName: "#activity+type",
-    reached: "#reached",
+    affected: "#affected",
     targeted: "#targeted",
     geo:"data/mdgAdm3.json",
     joinAttribute:"P_CODE",
@@ -75,7 +75,7 @@ function generate3WComponent(config,data,geom){
     var statusDimension = cf.dimension(function (d) { return d[config.statusFieldName]; });
     var interventionDimension = cf.dimension(function (d) { return d[config.interventionFieldName]; });
     var activiteDimension = cf.dimension(function (d) { return d[config.activiteFieldName]; });
-    var reachedDimension = cf.dimension(function (d) { return d[config.reached]; });
+    var affectedDimension = cf.dimension(function (d) { return d[config.affected]; });
 
     var whoGroup = whoDimension.group();
     var whatGroup = whatDimension.group();
@@ -83,12 +83,12 @@ function generate3WComponent(config,data,geom){
     var statusGroup = statusDimension.group();
     var interventionGroup = interventionDimension.group();
     var activiteGroup = activiteDimension.group();
-    var reachedGroup = reachedDimension.group();
-    var reached = cf.groupAll().reduceSum(function (d) {
-        if (isNaN(d[config.reached])) {
+    var affectedGroup = affectedDimension.group();
+    var affected = cf.groupAll().reduceSum(function (d) {
+        if (isNaN(d[config.affected])) {
             return 0;
         } else {
-            return d[config.reached];
+            return d[config.affected];
         }
     });
     var targeted = cf.groupAll().reduceSum(function (d) {
@@ -154,7 +154,7 @@ function generate3WComponent(config,data,geom){
             .colorAccessor(function (d, i) { return 3; })
             .xAxis().ticks(5);
 
-    activiteChart.width($('#activite').width()).height(150)
+    activiteChart.width($('#activite').width())
             .dimension(activiteDimension)
             .group(activiteGroup)
             .elasticX(true)
@@ -172,9 +172,9 @@ function generate3WComponent(config,data,geom){
             .dimension(cf)
             .group(all);
 
-    dc.dataCount('#reached-info')
+    dc.dataCount('#affected-info')
             .dimension(cf)
-            .group(reached);
+            .group(affected);
 
     dc.dataCount('#targeted-info')
             .dimension(cf)
@@ -207,7 +207,7 @@ function generate3WComponent(config,data,geom){
                 .showGroups(false)
                 .group(function (d) { return d[config.whatFieldName]; })
                 .size(200) //number of lines
-                .columns([//"#org", "adm1+name", "adm2+name", "adm3+name", "adm4+name", "status", "sector+subsector", "activity+type", "targeted", "reached"
+                .columns([
                         function (d) {
                             return d['#org'];
                         },
@@ -233,10 +233,10 @@ function generate3WComponent(config,data,geom){
                             return d['#activity+type'];
                         },
                         function (d) {
-                            return d['#targeted'];
+                            return d['#affected'];
                         },
                         function (d) {
-                            return d['#reached'];
+                            return d['#affected'];
                         }
                 ])
         //.renderlet(function (table) {
@@ -295,6 +295,7 @@ var geomCall = $.ajax({
 $.when(dataCall, geomCall).then(function (dataArgs, geomArgs) {
     dataArgs[0] = hxlProxyToJSON(dataArgs[0]);
     var geom = topojson.feature(geomArgs[0], geomArgs[0].objects.mdgAdm3);
+    console.log("test1=", geomArgs[0].objects.mdgAdm3, "test2=", geomArgs[0]);
     //converts place codes to string
     geom.features.forEach(function(e){
         e.properties[config.joinAttribute] = String(e.properties[config.joinAttribute]);
